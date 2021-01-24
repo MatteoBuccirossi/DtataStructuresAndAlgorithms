@@ -91,7 +91,7 @@ LFUCache.prototype.set = function(key, value){
             if(this.freq[1] === undefined){
                 this.freq[1] = new LFUDoublyLinkedList();
             }
-            this.freq[1].insert(node);
+            this.freq[1].insertAtHead(node);
         }
         this.minFreq = 1;
 
@@ -116,7 +116,7 @@ LFUCache.prototype.set = function(key, value){
 }
 
 LFUCache.prototype.get = function(key){
-    let node = this.keys[node];
+    let node = this.keys[key];
     if(node == undefined){
         return null;
     }else{
@@ -128,7 +128,7 @@ LFUCache.prototype.get = function(key){
             this.freq[node.freqCounter] = new LFUDoublyLinkedList();
         }
 
-        this.freqCounter[node.freqCounter].insertAtHead(node);
+        this.freq[node.freqCounter].insertAtHead(node);
         if(oldCounter == this.minFreq && Object.keys(this.freq[oldCounter]).size == 0){
             this.minFreq++
         }
@@ -136,14 +136,19 @@ LFUCache.prototype.get = function(key){
     }
 }
 
+LFUCache.prototype.print = function(){
+    let keys = Object.keys(this.keys);
+    for(let i = 0; i < keys.length; i++){
+        console.log(keys[i]);
+    }
+}
 
 
-let list1 = new LFUDoublyLinkedList();
-list1.insertAtHead(new LFUNode('ddd', 888));
-list1.insertAtHead(new LFUNode('ddd', 858));
-list1.insertAtTail(new LFUNode('ddd', 565574));
-list1.insertAtHead(new LFUNode('ddd', 889));
 
-
+let list1 = new LFUCache(5);
+for(let i = 0; i <= 30; i++){
+    list1.set(i, i);
+}
+console.log(list1.get(2))
 
 list1.print();
