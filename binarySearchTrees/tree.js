@@ -93,7 +93,19 @@ BinarySearchTree.prototype.BFS = function(){
         }
     }
 }
-
+BinarySearchTree.prototype.findNode = function(value){
+    let root = this.root;
+    while(root){
+        if(value > root.value){
+            root = root.right;
+        }else if(value < root.value){
+            root = root.left;
+        }else{
+            return true;
+        }
+    }
+    return false;
+}
 
 
 module.exports = new  BinarySearchTree();
