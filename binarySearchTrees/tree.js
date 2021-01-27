@@ -83,7 +83,7 @@ BinarySearchTree.prototype.BFS = function(){
     while(queue.length > 0){
         for(let el of queue){
             queue.shift();
-            console.log(el);
+            console.log(el.value);
             if(el.left != null){
                 queue.push(el.left);
             }
@@ -107,5 +107,81 @@ BinarySearchTree.prototype.findNode = function(value){
     return false;
 }
 
+BinarySearchTree.prototype.traversePreOrder = function(){
+    traversePreOrderHelper(this.root);
+    function traversePreOrderHelper(node){
+        if(!node){
+            return;
+        }
+        console.log(node.value);
+        traversePreOrderHelper(node.left);
+        traversePreOrderHelper(node.right);
+    }
+}
 
+BinarySearchTree.prototype.invert = function(){
+    let root = this.root;
+    let nodes = [];
+    if(!root){
+        return;
+    }
+    nodes.push(root);
+    while(nodes.length > 0){
+        for(let node of nodes){
+            nodes.shift();
+            [node.left, node.right] = [node.right, node.left];
+            if(node.left != null){
+                nodes.push(node.left);
+            }
+            if(node.right != null){
+                nodes.push(node.right);
+            }
+        }
+    }
+}
+
+Array.prototype.remove = function(from, to) {
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+  };
+
+let tree = new BinarySearchTree();
+let nums = [
+   7, 10, 20, 15, 16, 6, 14,
+  12,  2,  1,  9, 11, 3,  8,
+  19, 17,  5, 13, 18, 4
+];
+
+for(let el of nums){
+    tree.insert(el);
+}
+tree.BFS();
+tree.traversePreOrder();
+tree.invert();
+console.log('');
+console.log('');
+console.log('');
+tree.traversePreOrder();
 module.exports = new  BinarySearchTree();
+
+class AvlTree{
+    constructor(value){
+        this.left = null;
+        this.right = null;
+        this.value = value;
+        this.depth = 1;
+    }
+}
+
+AvlTree.prototype.setDepthBasedOnChildren = function(){
+    if(this.node == null){
+        this.depth = 0;
+    }else{
+        this.depth = 1;
+    }
+
+    if(this.left != null){
+        this.depth = this.left.depth +1;
+    }
+}
