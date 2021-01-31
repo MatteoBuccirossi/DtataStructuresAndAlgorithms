@@ -74,9 +74,96 @@ MinHeap.prototype.bubbleUpEvery = function(){
         this.bubbleUp();
     }
 }
+MinHeap.prototype.bubbleDownEvery = function(){
+    let index = 0;
+    while(this.leftChild(index)){
+        let smallerIndex = this.leftChildIndex(index);
+        if(this.items[index] > this.items[smallerIndex]){
+            this.swap(index, smallerIndex);
+            index = 0;
 
-let minHeap = new MinHeap();
-minHeap.items = [12,2,23,4,13];
-console.log(minHeap.items);
-minHeap.bubbleDown();
-console.log(minHeap.items);
+        }else{
+            index = smallerIndex;
+        }
+    }
+}
+
+MinHeap.prototype.sort = function(){
+    let i = 0;
+    while(this.items[i+1]){
+        let smaller = this.items[i+1];
+        if(smaller < this.items[i]){
+            [this.items[i], this.items[i+1]] =  [this.items[i+1], this.items[i]];
+            i = 0;
+        }else{
+            i++;
+        }
+    }
+}
+
+class MinHeapFinal extends MinHeap{}
+
+MinHeapFinal.prototype.add = function(item){
+    this.items[this.items.length] = item;
+    this.bubbleUp();
+}
+
+MinHeapFinal.prototype.poll = function(){
+    let item = this.items.shift();
+    this.bubbleDown();
+    return item;
+}
+MinHeapFinal.prototype.bubbleDown = function(){
+    let i = 0;
+    while(this.leftChild(i) && (this.leftChild(i) < this.items[i] || this.rightChild(i) < this.items[i])){
+        let smallerIndex = this.leftChildIndex(i);
+        if(this.rightChild(i) && ( this.rightChild(i) < this.leftChild(i))){
+            smallerIndex = this.rightChildIndex(i);
+        }
+        this.swap(smallerIndex, i);
+        i = smallerIndex;
+    }
+}
+
+MinHeapFinal.prototype.bubbleUp = function(){
+    let i = this.items.length-1;
+    while(this.parent(i) && this.parent(i) > this.items[i]){
+        this.swap(this.parentIndex(i), i);
+        i = this.parentIndex(i);
+    }
+}
+
+let minHeap = new MinHeapFinal();
+for(let i = 10; i >  0; i--){
+    minHeap.add(i);
+}
+
+class MaxHeap extends MinHeapFinal{}
+
+
+
+MaxHeap.prototype.bubbleDown = function(){
+    let i = 0;
+    while(this.leftChild(i) && (this.leftChild(i) > this.items[i] || this.rightChild(i) > this.items[i])){
+        let bigI = this.leftChildIndex(i);
+        if(this.rightChild(i) && ( this.rightChild(i) > this.leftChild(i))){
+            bigI = this.rightChildIndex(i);
+        }
+        i = bigI;
+    }
+}
+
+MaxHeap.prototype.poll = function(){
+    let item = this.items.shift();
+    this.bubbleUp();
+    return item;
+}
+
+MaxHeap.prototype.bubbleUp = function(){
+    let i = this.items.length-1;
+    while(this.parent(i) && this.parent(i) < this.items[i]){
+        this.swap(this.parentIndex(i), i);
+        i = this.parentIndex(i);
+    }
+}
+
