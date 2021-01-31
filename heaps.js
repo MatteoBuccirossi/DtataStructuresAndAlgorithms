@@ -167,3 +167,28 @@ MaxHeap.prototype.bubbleUp = function(){
     }
 }
 
+MinHeapFinal.prototype.sorting = function(array){
+    let assistHeap = new MinHeapFinal();
+    let outArray = [];
+    for(let el of array){
+        assistHeap.add(el);
+    }
+    while(assistHeap.items.length != 0){
+        outArray.push(assistHeap.poll());
+    }
+    return outArray;
+}
+
+MaxHeap.prototype.sorting = function(array){
+    let assistHeap = new MaxHeap();
+    let outArray = [];
+    for(let el of array){
+        assistHeap.add(el);
+    }
+    while(assistHeap.items.length != 0){
+        outArray.push(assistHeap.poll());
+    }
+    return outArray;
+}
+let newHeap = new MaxHeap();
+console.log(newHeap.sorting([2,4,23,12,13]));
