@@ -150,14 +150,41 @@ DirectedGraph.prototype.dijkstra = function(source){
     return dist;
 }
 
-var digraph1 = new DirectedGraph();
-digraph1.addVertex("A");
-digraph1.addVertex("B");
-digraph1.addVertex("C");
-digraph1.addVertex("D");
-digraph1.addEdge("A", "B", 1);
-digraph1.addEdge("B", "C", 1);
-digraph1.addEdge("C", "A", 1);
-digraph1.addEdge("A", "D", 1);
+DirectedGraph.prototype.TopologicalUtil = function(v, visited, stack){
+    visited.add(v);
+    for(let item in this.edges[v]){
+        if(visited.has(item) == false){
+            this.TopologicalUtil(item, visited, stack);
+        }
+    }
+    stack.unshift(v);
+}
 
-console.log(digraph1.dijkstra("A")); 
+DirectedGraph.prototype.topological = function(){
+    let visited = new Set();
+    let stack = [];
+
+    for(let edge in this.edges){
+        if(visited.has(edge) == false){
+            this.TopologicalUtil(edge, visited, stack);
+        }
+    }
+    return stack;
+}
+var g = new DirectedGraph();
+g.addVertex('A');
+g.addVertex('B');
+g.addVertex('C');
+g.addVertex('D');
+g.addVertex('E');
+g.addVertex('F');
+
+g.addEdge('B', 'A');
+g.addEdge('D', 'C');
+g.addEdge('D', 'B');
+g.addEdge('B', 'A');
+g.addEdge('A', 'F');
+g.addEdge('E', 'C');
+console.log(g.topological());
+
+
