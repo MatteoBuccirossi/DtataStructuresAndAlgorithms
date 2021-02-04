@@ -112,16 +112,52 @@ DirectedGraph.prototype.DFS = function(vertex){
 
 }
 
-let graph2 = new DirectedGraph();
-graph2.addVertex(1);
-graph2.addVertex(2);
-graph2.addEdge(1, 2, 1);
-graph2.addVertex(3);
-graph2.addVertex(4);
-graph2.addVertex(5);
-graph2.addEdge(2, 3, 8);
-graph2.addEdge(3, 4, 10);
-graph2.addEdge(4, 5, 100);
-graph2.addEdge(1, 5, 88);
-graph2.print();
-graph2.DFS('1');
+DirectedGraph.prototype._isEmpty = function(obj){
+    return Object.keys(obj).length == 0;
+}
+
+DirectedGraph.prototype._extractMin = function(q, dist){
+    let minimumDistance = Infinity;
+    let minimumDistanceNode = null;
+    for(let node in q){
+        if(dist[node] <= minimumDistance){
+            minimumDistance = dist[node];
+            minimumDistanceNode = node;
+        }
+    }
+    return minimumDistanceNode;
+}
+
+DirectedGraph.prototype.dijkstra = function(source){
+    let Q = {};
+    let dist = {};
+    for(let vertex in this.edges){
+        dist[vertex] = Infinity;
+        Q[vertex] = this.edges[vertex];
+    }
+    dist[source] = 0;
+    while(!this._isEmpty(Q)){
+        let u = this._extractMin(Q, dist);
+        delete Q[u];
+        for(let adj in this.edges[u]){
+            console.log(this.edges[u]);
+            let alt = dist[u] + this.edges[u][adj];
+            if(alt < dist[adj]){
+                dist[adj] = alt;
+            }
+        }
+    }
+    return dist;
+}
+
+var digraph1 = new DirectedGraph();
+digraph1.addVertex("A");
+digraph1.addVertex("B");
+digraph1.addVertex("C");
+digraph1.addVertex("D");
+digraph1.addEdge("A", "B", 1);
+digraph1.addEdge("B", "C", 1);
+digraph1.addEdge("C", "A", 1);
+digraph1.addEdge("A", "D", 1);
+
+console.log(digraph1.dijkstra("A")); 
